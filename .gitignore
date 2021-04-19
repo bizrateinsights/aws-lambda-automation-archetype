@@ -1,0 +1,14 @@
+target/
+!.mvn/wrapper/maven-wrapper.jar
+.idea
+*.iws
+*.iml
+*.ipr
+*.class
+.DS_Store
+*.db
+logs/*
+*.orig
+.idea/*
+foo
+chromedriver
