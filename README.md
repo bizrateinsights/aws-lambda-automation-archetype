@@ -19,24 +19,21 @@ This makes suite maintenance easier, and allows for identifying test flakiness a
 
 # Setup Instructions:
 
-1) Fork this code into a new project, set it up with your preferred method for uploading code to AWS, and create a new lambda. 
-Rename and point the framework's handle requests method at it.
+1) Fork this code into a new project, set it up with your preferred method for uploading code to AWS.
 
-2) Set up any needed aliases on the lambda, so you can properly deploy your code.
+2) Create a new lambda named `automation-archetype-lambda`, and point the framework's handle requests method at it: `ExampleRequestHandler.handleRequest`.
 
-3) Set up the lambda to use a reasonable amount of resources. Most existing lambda automation projects use the 1GB memory 
-version of AWS Lambda, since that is what seems to run the version of chrome in the S3 bucket in a stable way.
+3) Set up an alias on the lambda named `dev`.
 
-4) Rename any classes / methods as needed for your project
+4) Increase the amount of memory the lambda uses to 1 GB. This is so webdriver can run properly on the lambda without any issues.
 
-5) Set up three new s3 buckets for the automation results, screenshots, and a bucket holding a chromedriver instance and a 
-custom installation of chrome. A modified version of chrome that can run on AWS lambda instances can be found online, but be sure to make sure your version 
-of chromedriver matches that version of chrome. Ensure their names are set properly in the `meta.properties` file of your project. 
+5) Set up three new s3 buckets named `automation-results`, `automation-screenshots`, and `automation-tools`. Add a modified version of chrome and a corrosponding version of chromedriver that can run on AWS lambda instances (both can be found online).
 
-6) It is recommended you set a rule for auto deletion after a period of time on the automation results and screenshot buckets.
+6) Ensure the names of all three s3 buckets are set properly in the `meta.properties` file.
 
-7) Set up an SQS FIFO queue. Hook it up to the lambda input. For the lambda to work properly, it must
-processes 1 at a time. Ensure this is the case.
+7) Add a TTL rule on the `automation-results` and `automation-screenshot` buckets for two weeks.
+
+7) Set up an SQS FIFO queue named `automation-lambda.fifo`. Hook it up to the lambda input, and set the lambda to process exactly one sqs message per lambda.
 
 8) Set up all other values in the `meta.properties` file. Ensure they are correct.
 
@@ -46,6 +43,8 @@ processes 1 at a time. Ensure this is the case.
 
 11) Test run your framework - there should be two test successes and one test failure. Continue with local setup if you
 wish to develop on your native machine!
+
+Note: It is recommended you rename and update the classes and methods as suited for your needs. If you want to add more test classes with Junit tests, ensure your test classes end in "_Test.java". This is so the reflections library can properly detect and run your tests.
 
 # Local Setup:
 
