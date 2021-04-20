@@ -33,18 +33,14 @@ This makes suite maintenance easier, and allows for identifying test flakiness a
 
 7) Add a TTL rule on the `automation-results` and `automation-screenshot` buckets for two weeks.
 
-7) Set up an SQS FIFO queue named `automation-lambda.fifo`. Hook it up to the lambda input, and set the lambda to process exactly one sqs message per lambda.
+7) Set up an SQS FIFO queue named `automation-lambda.fifo`. Hook it up to the lambda input, and set the lambda to process exactly one sqs message per lambda. Set up the name in the `meta.properties` file.
 
-8) Set up all other values in the `meta.properties` file. Ensure they are correct.
+8) If you desire slack integration, set up the slack hook url for an existing slack bot in the `meta.properties` file.
 
-9) Change the slack url in the request handler if needed.
-
-10) Rename any methods/classes as needed.
-
-11) Test run your framework - there should be two test successes and one test failure. Continue with local setup if you
+9) Test run your framework - there should be two test successes and one test failure. Continue with local setup if you
 wish to develop on your native machine!
 
-Note: It is recommended you rename and update the classes and methods as suited for your needs. If you want to add more test classes with Junit tests, ensure your test classes end in "_Test.java". This is so the reflections library can properly detect and run your tests.
+Note: It is recommended you rename and update the classes and methods as suited for your needs. If you want to add more test classes with Junit tests, ensure your test classes end in `_Test.java`. This is so the reflections library can properly detect and run your tests.
 
 # Local Setup:
 
