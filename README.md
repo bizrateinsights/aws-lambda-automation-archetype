@@ -21,23 +21,25 @@ This makes suite maintenance easier, and allows for identifying test flakiness a
 
 1) Fork this code into a new project, set it up with your preferred method for uploading code to AWS.
 
-2) Create a new lambda named `automation-archetype-lambda`, and point the framework's handle requests method at it: `ExampleRequestHandler.handleRequest`.
+2) Create a new lambda named `automation-archetype-lambda`. 
 
-3) Set up an alias on the lambda named `dev`.
+3) Point the lambda's handle requests method to `ExampleRequestHandler.handleRequest`.
 
-4) Increase the amount of memory the lambda uses to 1 GB. This is so webdriver can run properly on the lambda without any issues.
+4) Set up an alias on the lambda named `dev`.
 
-5) Set up three new s3 buckets named `automation-results`, `automation-screenshots`, and `automation-tools`. Add a modified version of chrome and a corrosponding version of chromedriver that can run on AWS lambda instances (both can be found online).
+5) Increase the amount of memory the lambda uses to 1 GB. This is so webdriver can run properly on the lambda without any issues.
 
-6) Ensure the names of all three s3 buckets are set properly in the `meta.properties` file.
+6) Set up three new s3 buckets named `automation-results`, `automation-screenshots`, and `lambda-scaled-testing-artifacts`. Add a modified version of chrome  that can run on AWS lambda instances and a corrosponding version of chromedriver to the `lambda-scaled-testing-artifacts` bucket (both can be found online).
 
-7) Add a TTL rule on the `automation-results` and `automation-screenshot` buckets for two weeks.
+7) Ensure the names of all three s3 buckets are set properly in the `meta.properties` file. The `remote.artifacts.bucket` should be set to your `automation-screenshots` bucket, and the `remote.results.bucket` should be set to the `automation-results` bucket.
 
-7) Set up an SQS FIFO queue named `automation-lambda.fifo`. Hook it up to the lambda input, and set the lambda to process exactly one sqs message per lambda. Set up the name in the `meta.properties` file.
+8) Add a TTL rule on the `automation-results` and `automation-screenshot` buckets for two weeks.
 
-8) If you desire slack integration, set up the slack hook url for an existing slack bot in the `meta.properties` file.
+9) Set up an SQS FIFO queue named `automation-lambda.fifo`. Hook it up to the lambda input, and set the lambda to process exactly one sqs message per lambda. Set the sqs.name property to the same name in the `meta.properties` file.
 
-9) Test run your framework - there should be two test successes and one test failure. Continue with local setup if you
+10) If you desire slack integration, set up the slack hook url for an existing slack bot in the `meta.properties` file.
+
+11) Test run your framework - there should be two test successes and one test failure. Continue with local setup if you
 wish to develop on your native machine!
 
 Note: It is recommended you rename and update the classes and methods as suited for your needs. If you want to add more test classes with Junit tests, ensure your test classes end in `_Test.java`. This is so the reflections library can properly detect and run your tests.
